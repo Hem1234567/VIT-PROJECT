@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive Map</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Google Maps API -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDxs9xbCd0w_RM6pBbyUH0CjyKPYMEQJxs&callback=initMap"
+      async
+      defer
+    ></script>
+    <style>
+      /* Ensure the map container has a defined height */
+      #map {
+        height: 500px;
+      }
+    </style>
+  </head>
+  <body class="bg-black">
+    <div class="container mx-auto p-8">
+      <!-- Map Section -->
+      <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+        <h2 class="text-2xl font-bold p-6 bg-green-400 text-white">
+          Interactive Map
+        </h2>
+        <div id="map" class="w-full"></div>
+      </div>
+
+      <!-- Soil and Climate Information Section -->
+      <div class="mt-8 bg-black shadow-lg rounded-lg p-6">
+        <h3 class="text-xl font-bold mb-4 text-green-400">
+          Soil and Climate Information
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h4 class="font-semibold text-green-500">Soil Types</h4>
+            <p class="text-white">
+              The highlighted regions have soil types suitable for growing the
+              required plants. These include loamy, sandy, and clay soils.
+            </p>
+          </div>
+          <div>
+            <h4 class="font-semibold text-green-500">Climate Requirements</h4>
+            <p class="text-white">
+              The regions have a temperate climate with moderate rainfall, ideal
+              for the growth of these plants.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript for Google Maps -->
+    <script>
+      function initMap() {
+        console.log("Initializing map..."); // Debugging step
+
+        // Define the map center (e.g., a specific region)
+        const center = { lat: 20.5937, lng: 78.9629 }; // Example: India
+
+        // Create a map object
+        const map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 5,
+          center: center,
+          mapTypeId: "terrain",
+        });
+
+        console.log("Map created successfully!"); // Debugging step
+
+        // Add a marker for a specific region
+        new google.maps.Marker({
+          position: { lat: 19.076, lng: 72.8777 }, // Example: Mumbai
+          map: map,
+          title: "Mumbai Region",
+        });
+
+        // Add a polygon to highlight a region
+        const regionCoords = [
+          { lat: 18.5204, lng: 73.8567 }, // Pune
+          { lat: 19.076, lng: 72.8777 }, // Mumbai
+          { lat: 17.385, lng: 78.4867 }, // Hyderabad
+        ];
+
+        const region = new google.maps.Polygon({
+          paths: regionCoords,
+          strokeColor: "#FF0000",
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: "#FF0000",
+          fillOpacity: 0.35,
+        });
+
+        region.setMap(map);
+      }
+
+      // Handle errors in map initialization
+      function handleMapError() {
+        console.error(
+          "Error loading Google Maps. Please check your API key and network connection."
+        );
+        alert(
+          "Error loading Google Maps. Please check your API key and network connection."
+        );
+      }
+
+      // Add an error handler for the Google Maps API script
+      window.onload = function () {
+        if (!window.google || !window.google.maps) {
+          handleMapError();
+        }
+      };
+    </script>
+  </body>
+</html>
